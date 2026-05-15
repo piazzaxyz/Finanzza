@@ -26,7 +26,7 @@ router.post('/', (req: AuthRequest, res: Response) => {
 router.put('/:id', (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { title, content, date } = req.body as { title: string; content?: string; date?: string };
-  db.prepare('UPDATE notes SET title=?, content=?, date=? WHERE id=?').run(title, content || '', date, id);
+  db.prepare('UPDATE notes SET title=?, content=?, date=? WHERE id=?').run(title, content || '', date || new Date().toISOString().split('T')[0], id);
   const updated = db.prepare('SELECT * FROM notes WHERE id = ?').get(id);
   res.json(updated);
 });
